@@ -8,7 +8,7 @@ swt_markers_mark_dir = 0;
 _displayMark = displayNull;
 _displayMap = ({if !(isNull(findDisplay _x)) exitWith {findDisplay _x}} forEach [37,52,53,12]);
 (_displayMap displayCtrl 228) ctrlShow false;
-_text = "" + (if (swt_markers_fast_text_G) then {(groupID (group player)) + " "} else {""}) + (if (swt_markers_fast_text_N) then {name player + " "} else {""}) + (if (swt_markers_fast_text_T) then {swt_markers_fast_text_T_saved + " "} else {""});
+_text = "" + (if (swt_markers_fast_text_G) then {((groupID (group player)) call WMT_fnc_LongGroupNameToShort) + " "} else {""}) + (if (swt_markers_fast_text_N) then {name player + " "} else {""}) + (if (swt_markers_fast_text_T) then {swt_markers_fast_text_T_saved + " "} else {""});
 
 _WorldCoord = [];
 _send = [player];

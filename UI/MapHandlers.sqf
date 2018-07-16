@@ -55,7 +55,7 @@ swt_markers_MapMouseDown = {
     _shift = _this select 4;
     _ctrlKey = _this select 5;
     _alt = _this select 6;
-    if (!_shift and !_alt and _ctrlKey and ((_this select 1) == 0)) then {
+    if (_shift and !_alt and !_ctrlKey and ((_this select 1) == 0)) then {
     	["fast",[]] call swt_markers_sys_sendMark;
     } else {
 		if (!_shift and !_ctrlKey and _alt and ((_this select 1) == 0)) then {

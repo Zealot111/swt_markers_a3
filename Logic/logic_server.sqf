@@ -42,13 +42,16 @@ swt_markers_logicServer_regMark = {
 	_player = _this select 0;
 	_mark = _this select 1;
 	_channel = _mark select 1;
-	_mark pushBack time;
+	_mark pushBack (daytime - swt_markers_daytime) * 3600;
 	swt_markers_count = swt_markers_count + 1;
 	_mark set [0, "SWT_M#"+ str swt_markers_count]; // BAD
 	swt_markers_send_mark = _mark;
 	_cond = "";
 	_units = [];
-
+	///////////////////////
+	// OCAP
+	["SWT_fnc_createMarker", [_player, swt_markers_send_mark]] call CBA_fnc_localEvent;
+	///////////////////////
 	switch (_channel) do {
 	    case "S": {
 	    	_cond = "(side _x == side _player)";
@@ -203,21 +206,33 @@ swt_markers_logicServer_change_mark = {
 	    case "DIR": {
 	    	_dir = _this select 4;
 	    	swt_markers_send_dir = [_mark_id,_dir,_player];
+	    	///////////////////////////
+	    	// OCAP
+	    	["SWT_fnc_dirMarker", swt_markers_send_dir] call CBA_fnc_localEvent;
+	    	///////////////////////////
 			publicVariable "swt_markers_send_dir";
 			if (hasInterface) then {swt_markers_send_dir call swt_markers_logicClient_dir};
 	    };
 
 	     case "DEL": {
 	    	swt_markers_send_del = [_mark_id,_player];
+	    	///////////////////////////
+	    	// OCAP
+	    	["SWT_fnc_removeMarker", swt_markers_send_del] call CBA_fnc_localEvent;
+	    	///////////////////////////
 			publicVariable "swt_markers_send_del";
 			if (hasInterface) then {swt_markers_send_del call swt_markers_logicClient_del};
 	    };
 
 		case "POS": {
 			_pos = _this select 4;
-		   swt_markers_send_pos = [_mark_id,_pos,_player];
-		   publicVariable "swt_markers_send_pos";
-		   if (hasInterface) then {swt_markers_send_pos call swt_markers_logicClient_pos};
+		    swt_markers_send_pos = [_mark_id,_pos,_player];
+		    ///////////////////////////
+	    	// OCAP
+	    	["SWT_fnc_moveMarker", swt_markers_send_pos] call CBA_fnc_localEvent;
+	    	///////////////////////////
+		    publicVariable "swt_markers_send_pos";
+		    if (hasInterface) then {swt_markers_send_pos call swt_markers_logicClient_pos};
 	   };
 	};
 
@@ -260,7 +275,7 @@ swt_markers_logicServer_load = {
 		_x set [0, "SWT_M#"+ str swt_markers_count];
 		_x set [1, "S"];
 		_x pushBack (name _player);
-		_x pushBack time;
+		_x pushBack (daytime - swt_markers_daytime) * 3600;
 		_x pushBack true; //means loaded
 	} forEach _data;
 

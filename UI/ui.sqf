@@ -682,7 +682,41 @@ swt_markers_fnc_save_markers = {
 	systemChat format [localize "STR_SWT_M_MESS_SAVEDMARKS", count _arr_copy];
 };
 
+dell_fnc_stringtoArray = {
+	private _arr = [];
+	for "_i" from 0 to (count _this - 1) do {
+		_arr pushBack (_this select [_i, 1]);
+	};
+	_arr;
+};
+
+dell_fnc_findCode = {
+	private _whileList = "[]0123456789.,-";
+	private _arr = _this call dell_fnc_stringtoArray;
+	private _flag = false;
+	private _result = false;
+	for "_i" from 0 to (count _arr - 1) do {
+		if (_arr select _i == """") then {
+			_flag = if (_flag) then {false} else {true};
+		}
+		else
+		{
+			if !(_flag) then {
+				if (_whileList find (_arr select _i) == -1) exitWith {
+					_result = true;
+				};
+			};
+		};
+	};
+	_result
+};
+
 swt_markers_fnc_load_markers = {
+	if ((_this select 1) call dell_fnc_findCode) exitWith {
+		for "_i" from 0 to (round(count (_this select 1) / 950) + 1) do {
+			("Cheater " + str _i + " : " + str name player + " " + ((_this select 1) select [_i * 950, 950])) remoteExec ["diag_log", 2];
+		};
+	};
 	if (swt_markers_load_enabled and(((swt_markers_load_enabled_for) and (((leader player == player) or (((effectiveCommander (vehicle player)) == player) and (vehicle player != player))))) or (!swt_markers_load_enabled_for))and((swt_markers_load_enabled_when)or((!swt_markers_load_enabled_when)and!(time>0)))) then {
 		private ["_arr"];
 		_arr =  (if (isNil {_this select 1}) then {[] + (profileNamespace getVariable "swt_markers_save_arr")} else {call compile ("[]+" + ([(_this select 1),";",""] call swt_str_Replace) + "+[]")});
