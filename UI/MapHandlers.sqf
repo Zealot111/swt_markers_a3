@@ -33,14 +33,11 @@ swt_markers_MapMouseUp = {
 			swt_markers_ellipse = nil;
 		};
 		if !(isNil "swt_mark_to_change_pos") then {
-			diag_log ["CHANGE POS", _coords, _mark];
 			_mark = swt_mark_to_change_pos;
-			if (_mark call swt_markers_getChannel == "S" && (0 call swt_rbc_checkSideChannel)) then { 
-				_coords = + swt_markers_position;
-				swt_markers_sys_change_mark = ["POS", player, _mark, _mark call swt_markers_getChannel, _coords];
-				if (!isMultiplayer) then {swt_markers_sys_change_mark call swt_markers_logicServer_change_mark};
-				publicVariableServer "swt_markers_sys_change_mark";
-			};
+			_coords = + swt_markers_position;
+			swt_markers_sys_change_mark = ["POS", player, _mark, _mark call swt_markers_getChannel, _coords];
+			if (!isMultiplayer) then {swt_markers_sys_change_mark call swt_markers_logicServer_change_mark};
+			publicVariableServer "swt_markers_sys_change_mark";
 			swt_mark_to_change_pos = nil;
 			swt_markers_position = nil;
 		};
@@ -118,9 +115,10 @@ swt_markers_MapMouseDown = {
 								_pos = getMarkerPos _x;
 								_pos = _ctrl ctrlMapWorldToScreen _pos;
 								if (([_pos,_pos_click] call bis_fnc_distance2D) < 0.025) exitWith {
-									if (name player == ((swt_markers_allMarkers_params select _forEachIndex) select 8)) then {
+									if (name player == ((swt_markers_allMarkers_params select _forEachIndex) select 8) && (_x call swt_markers_getChannel != "S" || (0 call swt_rbc_checkSideChannel))) then {
 										swt_mark_to_change_pos = _x;
 										swt_markers_position = getMarkerPos _x;
+										diag_log ["Setting Market to move",swt_mark_to_change_pos,swt_markers_position];
 									} else {
 										systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
 									};
