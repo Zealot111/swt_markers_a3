@@ -6,6 +6,25 @@ swt_markers_getChannel = {
 	(swt_markers_allMarkers_params select (swt_markers_allMarkers find _this)) select 1;
 };
 
+// Проверяет, есть ли у игрока возможность ставить маркер в sidechat
+swt_rbc_checkSideChannel = {
+	private _has_ability = false;
+
+	if (!isNil "WMT_pub_frzState" && WMT_pub_frzState < 3) then {
+		_has_ability = true;
+	};
+
+	switch (true) do {
+		// case ("ACE_microDAGR" in items player);
+		// case ("ItemGPS" in assignedItems player);
+		case (call TFAR_fnc_haveLRRadio): {
+			_has_ability = true;
+		};
+	};
+
+	_has_ability;
+};
+
 swt_markers_createMarker = {
 	private ["_mark","_params"];
 	_params = _this;
@@ -136,6 +155,17 @@ swt_markers_DisableLoc_fnc = {
 };
 
 0 spawn {
+	disableSerialization;
+	addMissionEventHandler ["Map", {
+		params ["_mapIsOpened", "_mapIsForced"];
+		if (_mapIsOpened) then {
+			0 spawn {
+				uiSleep 0.75;
+				findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["KeyDown", {_this select 1 == 29 && !(0 call swt_rbc_checkSideChannel) && currentChannel == 1}];
+			};
+		};
+	}];
+
 	"swt_markers_send_mark"  addPublicVariableEventHandler {
 		(_this select 1) call swt_markers_logicClient_create;
 	};

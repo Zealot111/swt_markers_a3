@@ -33,11 +33,14 @@ swt_markers_MapMouseUp = {
 			swt_markers_ellipse = nil;
 		};
 		if !(isNil "swt_mark_to_change_pos") then {
-			_coords = + swt_markers_position;
+			diag_log ["CHANGE POS", _coords, _mark];
 			_mark = swt_mark_to_change_pos;
-			swt_markers_sys_change_mark = ["POS", player, _mark, _mark call swt_markers_getChannel, _coords];
-			if (!isMultiplayer) then {swt_markers_sys_change_mark call swt_markers_logicServer_change_mark};
-			publicVariableServer "swt_markers_sys_change_mark";
+			if (_mark call swt_markers_getChannel == "S" && (0 call swt_rbc_checkSideChannel)) then { 
+				_coords = + swt_markers_position;
+				swt_markers_sys_change_mark = ["POS", player, _mark, _mark call swt_markers_getChannel, _coords];
+				if (!isMultiplayer) then {swt_markers_sys_change_mark call swt_markers_logicServer_change_mark};
+				publicVariableServer "swt_markers_sys_change_mark";
+			};
 			swt_mark_to_change_pos = nil;
 			swt_markers_position = nil;
 		};
