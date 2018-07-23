@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////
-//DeRap: Produced from mikero's Dos Tools Dll version 5.58
-//'now' is Tue Oct 17 22:55:42 2017 : 'file' last modified on Sun Sep 03 21:48:18 2017
+//DeRap: swt_markers_a3\config.bin
+//Produced from mikero's Dos Tools Dll version 6.49
+//'now' is Mon Jul 23 21:01:16 2018 : 'file' last modified on Fri Jan 19 16:46:18 2018
 //http://dev-heaven.net/projects/list_files/mikero-pbodll
 ////////////////////////////////////////////////////////////////////
 
 #define _ARMA_
 
-//Class swt_markers_a3 : config.bin{
 class CfgPatches
 {
 	class swt_markers
@@ -14,7 +14,7 @@ class CfgPatches
 		units[] = {"swt_markers_disable","swt_markers_params"};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		requiredAddons[] = {"a3_ui_f"};
+		requiredAddons[] = {"a3_ui_f","A3_Ui_F_Data"};
 		author[] = {"swatSTEAM"};
 	};
 };
@@ -141,7 +141,42 @@ class swt_RscButton
 	colorFocused[] = {0,0,0,0};
 	colorBackgroundActive[] = {0,0,0,0};
 	colorDisabled[] = {0,0,0,0};
-	colorBackgroundDisabled[] = {0,0,0,0};
+	colorBackgroundDisabled[] = {1,1,1,1};
+	colorBackgroundFocused[] = {1,1,1,1};
+	colorBackground2[] = {0.75,0.75,0.75,1};
+	offsetX = 0;
+	offsetY = 0;
+	offsetPressedX = 0;
+	offsetPressedY = 0;
+	colorShadow[] = {0,0,0,0};
+	colorBorder[] = {1,1,1,1};
+	borderSize = 0;
+	soundEnter[] = {};
+	soundPush[] = {};
+	soundClick[] = {};
+	soundEscape[] = {};
+};
+class MDL_RscButton
+{
+	type = 1;
+	style = 2;
+	x = 0;
+	y = 0;
+	w = 0;
+	h = 0;
+	shadow = 2;
+	font = "PuristaMedium";
+	size = "";
+	sizeEx = "(((((safezoneW/safezoneH) min 1.2)/1.2)/25) * 1)";
+	text = "";
+	color[] = {};
+	colorActive[] = {1,0.2,0.2,1};
+	colorText[] = {0,0,0,0};
+	colorBackground[] = {0,0,0,0};
+	colorFocused[] = {1,1,1,1};
+	colorBackgroundActive[] = {1,1,1,1};
+	colorDisabled[] = {1,1,1,1};
+	colorBackgroundDisabled[] = {1,1,1,1};
 	offsetX = 0;
 	offsetY = 0;
 	offsetPressedX = 0;
@@ -173,7 +208,7 @@ class swt_RscDisplayInsertMarker
 	{
 		class Description: RscStructuredText
 		{
-			colorBackground[] = {0,0,0,0.7};
+			colorBackground[] = {"32/255","18/255","5/255",0.85};
 			idc = 1100;
 			x = 0;
 			y = 0;
@@ -191,6 +226,7 @@ class swt_RscDisplayInsertMarker
 			w = "10 * (((safezoneW/safezoneH) min 1.2)/40)";
 			h = "1 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			onKeyDown = "_this call swt_markers_editDOWN";
+			colorBackground[] = {0,0,0,0.8};
 		};
 		class swt_Picture: RscPicture
 		{
@@ -248,44 +284,41 @@ class swt_RscDisplayInsertMarker
 			h = "1 *  ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			OnButtonClick = "_this spawn swt_markers_set_butt";
 		};
-		class add_group: RscActiveText
+		class add_group: MDL_RscButton
 		{
 			idc = 903;
-			text = "G";
-			color[] = {1,1,1,0.25};
-			colorText[] = {1,1,1,0.25};
-			colorActive[] = {0.8,0.8,0.8,0.5};
+			text = "$STR_MDL_G";
+			font = "EtelkaNarrowMediumPro";
+			colorBackgroundActive[] = {0,0,0,0.9};
 			x = 0;
 			y = 0;
-			w = "0.5 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
+			w = "0.73 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			h = "1 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			sizeEx = "0.8 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			OnButtonClick = "[_this select 0,'G'] call swt_markers_fast_text";
 		};
-		class add_name: RscActiveText
+		class add_name: MDL_RscButton
 		{
 			idc = 902;
-			text = "N";
-			color[] = {1,1,1,0.25};
-			colorText[] = {1,1,1,0.25};
-			colorActive[] = {0.8,0.8,0.8,0.5};
+			text = "$STR_MDL_N";
+			colorBackgroundActive[] = {0,0,0,0.9};
+			font = "EtelkaNarrowMediumPro";
 			x = 0;
 			y = 0;
-			w = "0.5 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
+			w = "0.73 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			h = "1 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			sizeEx = "0.8 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			OnButtonClick = "[_this select 0,'N'] call swt_markers_fast_text";
 		};
-		class add_text: RscActiveText
+		class add_text: MDL_RscButton
 		{
 			idc = 901;
-			text = "T";
-			color[] = {1,1,1,0.25};
-			colorText[] = {1,1,1,0.25};
-			colorActive[] = {0.8,0.8,0.8,0.5};
+			text = "$STR_MDL_T";
+			colorBackgroundActive[] = {0,0,0,0.9};
+			font = "EtelkaNarrowMediumPro";
 			x = 0;
 			y = 0;
-			w = "0.5 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
+			w = "0.73 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			h = "1 *  ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			sizeEx = "0.8 * ((((safezoneW/safezoneH) min 1.2)/1.2)/25)";
 			OnButtonClick = "[_this select 0,'T'] call swt_markers_fast_text";
@@ -1037,4 +1070,3 @@ class cfgMods
 	author = "swatSTEAM";
 	timepacked = "1442689873";
 };
-//};

@@ -3,6 +3,21 @@ _action = _this select 0;
 _params = _this select 1;
 if (swt_markers_disable) exitWith {systemChat (localize "STR_SWT_M_MESS_DISABLED"); true};
 
+// Проверяет, есть ли у игрока возможность ставить маркер в sidechat
+private _rbc_checkSideChannel = {
+	private _has_ability = false;
+
+	switch (true) do {
+		case ("ACE_microDAGR" in items player);
+		case ("ItemGPS" in assignedItems player);
+		case (call TFAR_fnc_haveLRRadio): {
+			_has_ability = true;
+		};
+	};
+
+	_has_ability;
+};
+
 swt_markers_mark_dir = 0;
 
 _displayMark = displayNull;
@@ -18,6 +33,13 @@ _go = true;
 switch (swt_markers_channel) do {
 	case (localize "str_channel_side"): {
 		_channel = "S";
+		_go = call _rbc_checkSideChannel;
+		if (!_go && !isNil"CBA_fnc_localEvent") then {
+			[
+				"ace_common_displayTextStructured",
+				["Требуется <t underline='true'>ДВ, GPS или microDAGR</t> чтобы ставить маркеры в доп. канал", 2]
+			] call CBA_fnc_localEvent;
+		};
 	};
 
 	case (localize "str_channel_command"): {

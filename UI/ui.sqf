@@ -214,7 +214,7 @@ swt_markers_showInfo = {
 		swt_markers_MapTime = 0;
 	};
 };
-
+//start redesigned by MODUL
 swt_markers_fast_text = {
 	disableSerialization;
 	_ctrl = _this select 0;
@@ -224,31 +224,31 @@ swt_markers_fast_text = {
 	    case "N": {
 	    	if (isNil {_this select 2}) then {swt_markers_fast_text_N = !swt_markers_fast_text_N};
 	    	if (swt_markers_fast_text_N) then {
-	    		_ctrl ctrlSetTextColor [1,1,1,1];
+	    		_ctrl ctrlSetTextColor [247/255,176/255,74/255,1];
 	  		} else {
-	  			_ctrl ctrlSetTextColor [1,1,1,0.25];
+	  			_ctrl ctrlSetTextColor [1,1,1,0.5];
 	  		};
 		};
 
 	    case "G": {
 	     	if (isNil {_this select 2}) then {swt_markers_fast_text_G = !swt_markers_fast_text_G};
 	    	if (swt_markers_fast_text_G) then {
-	    		_ctrl ctrlSetTextColor [1,1,1,1];
+	    		_ctrl ctrlSetTextColor [247/255,176/255,74/255,1];
 	  		} else {
-	  			_ctrl ctrlSetTextColor [1,1,1,0.25];
+	  			_ctrl ctrlSetTextColor [1,1,1,0.5];
 	  		};
 	    };
 
 	    case "T": {
 	     	if (isNil {_this select 2}) then {swt_markers_fast_text_T = !swt_markers_fast_text_T};
 	    	if (swt_markers_fast_text_T) then {
-	    		_ctrl ctrlSetTextColor [1,1,1,1];
+	    		_ctrl ctrlSetTextColor [247/255,176/255,74/255,1];
 	  		} else {
-	  			_ctrl ctrlSetTextColor [1,1,1,0.25];
+	  			_ctrl ctrlSetTextColor [1,1,1,0.5];
 	  		};
 	    };
 	};
-
+//end
 };
 
 swt_markers_setChannel = {
@@ -682,27 +682,30 @@ swt_markers_fnc_save_markers = {
 	systemChat format [localize "STR_SWT_M_MESS_SAVEDMARKS", count _arr_copy];
 };
 
-dell_fnc_safe_string2Array = {
-	params [["_strArray", "[]", [""]]];
-	_simpleArray = "";
-	_isString = false;
-	for "_i" from 0 to (count _strArray - 1) do {
-		_char = _strArray select [_i, 1];
-		if (_char == """") then {_isString = !_isString};
-		if (!_isString && (" ;" find _char) == -1) then {
-			_simpleArray = _simpleArray + _char;
+dell_fnc_findCode = {
+	private _whileList = "[]1234567890.,- ";
+	private _str = _this;
+	private _result = -1;
+	for "_i" from 0 to (count _str - 1) do {
+		if ((_str select [_i, 1]) == """") then {
+			while {_i = _i + 1; ((_str select [_i, 1]) != """")} do {};
+			_i = _i + 1;
 		};
-		if (_isString) then {
-			_simpleArray = _simpleArray + _char;
-		};
+		if (_whileList find (_str select [_i, 1]) == -1) exitWith {_result = _i};
 	};
-	parseSimpleArray _simpleArray;
+	_result
 };
 
 swt_markers_fnc_load_markers = {
+	_findCode = (if (isNil {_this select 1}) then {""} else {_this select 1}) call dell_fnc_findCode;
+	if (_findCode != -1) exitWith {
+		diag_log format["SWT ERROR (%1): There are signs of code on the boot line.", __FILE__];
+		diag_log format["SWT ERROR (%1): INPUT LINE: %2", __FILE__, (_this select 1) select [[0, _findCode - 100] select (_findCode - 100 >= 0), 200]];
+		systemChat "SWT ERROR: There are signs of code on the boot line.";
+	};
 	if (swt_markers_load_enabled and(((swt_markers_load_enabled_for) and (((leader player == player) or (((effectiveCommander (vehicle player)) == player) and (vehicle player != player))))) or (!swt_markers_load_enabled_for))and((swt_markers_load_enabled_when)or((!swt_markers_load_enabled_when)and!(time>0)))) then {
 		private ["_arr"];
-		_arr =  (if (isNil {_this select 1}) then {[] + (profileNamespace getVariable "swt_markers_save_arr")} else {(_this # 1) call dell_fnc_safe_string2Array});
+		_arr =  (if (isNil {_this select 1}) then {[] + (profileNamespace getVariable "swt_markers_save_arr")} else {call compile ("[]+" + ([(_this select 1),";",""] call swt_str_Replace) + "+[]")});
 		if !(_arr isEqualTo []) then {
 			if (count _arr > 500) exitWith {systemChat (format [localize "STR_SWT_M_MESS_CANTLOAD", count _arr, 500]);};
 			_copy_arr = [];
