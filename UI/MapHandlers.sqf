@@ -118,7 +118,6 @@ swt_markers_MapMouseDown = {
 									if (name player == ((swt_markers_allMarkers_params select _forEachIndex) select 8) && (_x call swt_markers_getChannel != "S" || (0 call swt_rbc_checkSideChannel))) then {
 										swt_mark_to_change_pos = _x;
 										swt_markers_position = getMarkerPos _x;
-										diag_log ["Setting Market to move",swt_mark_to_change_pos,swt_markers_position];
 									} else {
 										systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
 									};
