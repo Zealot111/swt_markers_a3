@@ -15,8 +15,8 @@ swt_rbc_checkSideChannel = {
 	};
 
 	switch (true) do {
-		case ("ACE_microDAGR" in items player);
 		case ("ItemGPS" in assignedItems player);
+		case (["B_UavTerminal", "O_UavTerminal", "I_UavTerminal", "C_UavTerminal", "I_E_UavTerminal", "B_ION_UavTerminal_F", "O_R_UavTerminal_F"] in assignedItems player);
 		case (call TFAR_fnc_haveLRRadio): {
 			_has_ability = true;
 		};

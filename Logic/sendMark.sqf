@@ -24,7 +24,7 @@ switch (swt_markers_channel) do {
 		if (!_go && !isNil"CBA_fnc_localEvent") then {
 			[
 				"ace_common_displayTextStructured",
-				["Требуется <t underline='true'>ДВ</t> чтобы ставить маркеры в доп. канал", 2]
+				["Требуется <t underline='true'>ДВ</t> или <t underline='true'>GPS</t> чтобы ставить маркеры в доп. канал", 2]
 			] call CBA_fnc_localEvent;
 		};
 	};
