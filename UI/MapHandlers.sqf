@@ -111,18 +111,45 @@ swt_markers_MapMouseDown = {
 						["road", getPosATL _min] call swt_markers_sys_sendMark;
 					} else {
 						if ((_this select 1) == 0) then {
-							{
-								_pos = getMarkerPos _x;
-								_pos = _ctrl ctrlMapWorldToScreen _pos;
-								if (([_pos,_pos_click] call bis_fnc_distance2D) < 0.025) exitWith {
-									if (name player == ((swt_markers_allMarkers_params select _forEachIndex) select 8) && (_x call swt_markers_getChannel != "S" || (0 call swt_rbc_checkSideChannel))) then {
-										swt_mark_to_change_pos = _x;
-										swt_markers_position = getMarkerPos _x;
-									} else {
-										systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
-									};
-								};
-							} forEach swt_markers_allMarkers;
+							// {
+								// _pos = getMarkerPos _x;
+								// _pos = _ctrl ctrlMapWorldToScreen _pos;
+								// if (([_pos,_pos_click] call bis_fnc_distance2D) < 0.025) exitWith {
+									// if (name player == ((swt_markers_allMarkers_params select _forEachIndex) select 8) && (_x call swt_markers_getChannel != "S" || (0 call swt_rbc_checkSideChannel))) then {
+										// swt_mark_to_change_pos = _x;
+										// swt_markers_position = getMarkerPos _x;
+									// } else {
+										// systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
+									// };
+								// };
+							// } forEach swt_markers_allMarkers;
+                            // взять список и отсортировать
+                            _map_pos_click = _ctrl ctrlMapScreenToWorld _pos_click;
+                            private _markers = [swt_markers_allMarkers, [_map_pos_click], {[_input0, getMarkerPos _x] call bis_fnc_distance2D}, "ASCEND"] call BIS_fnc_sortBy;
+                            diag_log [_markers];
+                            {
+                                private _id =  swt_markers_allMarkers find _x;
+                                private _param = swt_markers_allMarkers_params # _id;
+                                
+                                private _pos = _ctrl ctrlMapWorldToScreen getMarkerPos _x;
+                                diag_log [_id, _param, _pos];
+                                if (([_pos,_pos_click] call bis_fnc_distance2D) < 0.05) exitWith {
+                                        diag_log [_markers, [getMarkerPos _x,_pos_click] call bis_fnc_distance2D, _param];
+                                        if (name player == (_param # 8) && (_param #1 isNotEqualTo "S" || (0 call swt_rbc_checkSideChannel))) then {
+                                            swt_mark_to_change_pos = _x;
+                                            swt_markers_position = getMarkerPos _x;
+                                        } else {
+                                            systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
+                                        };
+                               
+                                };
+                            } foreach _markers;
+                            
+                            
+                            //["_mark", "_Chan", "_Text", "_Pos", "_Type", "_Color", "_Dir", "_Scale", "_Name"];
+                            
+                            
+                            
 						};
 					};
 				};
