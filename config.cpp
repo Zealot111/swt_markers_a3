@@ -29,6 +29,11 @@ class CfgFunctions
 			{
 				preInit = 1;
 			};
+       		class settings
+			{
+				postInit = 1;
+			};
+
 		};
 	};
 };

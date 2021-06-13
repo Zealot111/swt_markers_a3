@@ -7,6 +7,45 @@ swt_markers_isPlayer_bug = [];
 
 // callbacks: swt_markers_send_JIP  swt_markers_send_mark swt_markers_send_dir swt_markers_send_del swt_marker_send_load
 
+swt_rbc_radio_listen_freqs = {
+    private _result = [];
+    if (!alive _this || !isPlayer _this) exitWith {_result};
+    private _lr_settings = _this call TFAR_fnc_activeLRRadio call tfar_fnc_getLRSettings;
+    if (!isNil{_lr_settings}) then {
+       _result pushBack ((_lr_settings#4) + (_lr_settings #2) # (_lr_settings #0));
+       if (_lr_settings# 5 isNotEqualTo -1) then {
+           _result pushBack ((_lr_settings#4) + (_lr_settings #2) # (_lr_settings #5));
+       };
+    };
+    private _sw_settings = _this call TFAR_fnc_activeSwRadio call tfar_fnc_getSwSettings;
+    if (!isNil{_sw_settings}) then {
+       _result pushBack ((_sw_settings#4) + (_sw_settings #2) # (_sw_settings #0));
+       if (_sw_settings# 5 isNotEqualTo -1) then {
+           _result pushBack ((_sw_settings#4) + (_sw_settings #2) # (_sw_settings #5));
+       };
+    };
+    _result;
+};
+
+swt_rbc_listen_same_tf_radio = {
+    params ["_player","_unit"];
+    private _playerRadios = _player call swt_rbc_radio_listen_freqs;
+    private _unitRadios = _unit call swt_rbc_radio_listen_freqs;
+    if (count (_playerRadios arrayIntersect _unitRadios) > 0) exitWith {true};
+    false;
+};
+
+swt_rbc_find_players_with_same_radio = {
+    params ["_player"];
+    private _result = [];
+    private _playerRadios = _player call swt_rbc_radio_listen_freqs;
+    {
+        if (_playerRadios arrayIntersect (_x call swt_rbc_radio_listen_freqs)) then {
+            _result pushBack _x;
+        };
+    } forEach (allUnits # {isPlayer _x});
+    _result;
+};
 
 swt_markers_logicServer_regMark = {
 	private ["_mark"];
@@ -25,11 +64,11 @@ swt_markers_logicServer_regMark = {
 		};
 	};
 
-	_addToChannel = {
+	_addToChannel = { 
 		private ["_mark"];
-		_channelData = _this select 0;
+		_channelData = _this select 0; 
 		_channelData = missionNamespace getVariable ("swt_markers_logicServer_" + _channelData);
-		_channelUnit = _this select 1;
+		_channelUnit = _this select 1; 
 		_mark = _this select 2;
 		if (_channelData find _channelUnit == -1) then {
 			_channelData pushBack _channelUnit;
@@ -38,7 +77,7 @@ swt_markers_logicServer_regMark = {
     		(_channelData select ((_channelData find _channelUnit) + 1)) pushBack _mark;
     	};
 	};
-
+    
 	_player = _this select 0;
 	_mark = _this select 1;
 	_channel = _mark select 1;
@@ -79,9 +118,9 @@ swt_markers_logicServer_regMark = {
 	    };
         // group channel
 	    case "GR": {
-	    	_cond = "(group _x == group _player)";
+	    	_cond = "((group _x == group _player) || (swt_rbc_group_markers_via_radio && {([_player, _x] call swt_rbc_listen_same_tf_radio) && (side _x isEqualTo side _player)}))";
 	    	[_channel, group _player, _mark] call _addToChannel;
-	    	_units = units group _player;
+	    	_units = (playableUnits+switchableUnits);
 	    };
         // direct channel
 	    case "D": {
