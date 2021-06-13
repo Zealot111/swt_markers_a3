@@ -17,7 +17,7 @@ swt_rbc_checkSideChannel = {
 	switch (true) do {
 		case ("ItemGPS" in assignedItems player);
 		case (["B_UavTerminal", "O_UavTerminal", "I_UavTerminal", "C_UavTerminal", "I_E_UavTerminal", "B_ION_UavTerminal_F", "O_R_UavTerminal_F"] in assignedItems player);
-		case (call TFAR_fnc_haveLRRadio): {
+		case (!isNil{TFAR_fnc_haveLRRadio} && {call TFAR_fnc_haveLRRadio}): {
 			_has_ability = true;
 		};
 	};
@@ -28,16 +28,9 @@ swt_rbc_checkSideChannel = {
 swt_markers_createMarker = {
 	private ["_mark","_params"];
 	_params = _this;
-	_mark = _params select 0;
-	_Chan  = _params select 1;
-	_Text  = _params select 2;
-	_Pos   = _params select 3;
-	_Type  = _params select 4;
-	_Color = _params select 5;
-	_Dir   = _params select 6;
-	_Scale = _params select 7;
-	_Name  = _params select 8;
-
+    
+    params ["_mark", "_Chan", "_Text", "_Pos", "_Type", "_Color", "_Dir", "_Scale", "_Name"];
+    
 	swt_markers_allMarkers pushBack _mark;
 	swt_markers_allMarkers_params pushBack _params;
 
@@ -154,17 +147,35 @@ swt_markers_DisableLoc_fnc = {
 	};
 };
 
+swt_rbc_dim_markers_from_other_channels = {
+    private _swt_to_arma_channel = ["GL","S","C","GR","V","D"];
+    private _currentChannel = _swt_to_arma_channel # currentChannel;
+    {
+        swt_markers_allMarkers_params # _forEachIndex params ["_mark", "_Chan", "_Text", "_Pos", "_Type", "_Color", "_Dir", "_Scale", "_Name"];
+        if (_Chan isNotEqualTo _currentChannel) then {
+            //dim marker
+            _mark setMarkerAlphaLocal 0.4;
+        } else {
+            _mark setMarkerAlphaLocal 1;
+        };
+    } forEach swt_markers_allMarkers;
+};
+
 0 spawn {
 	disableSerialization;
 	addMissionEventHandler ["Map", {
 		params ["_mapIsOpened", "_mapIsForced"];
 		if (_mapIsOpened) then {
+            call swt_rbc_dim_markers_from_other_channels;
 			0 spawn {
 				uiSleep 0.75;
 				findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["KeyDown", {_this select 1 == 29 && !(0 call swt_rbc_checkSideChannel) && currentChannel == 1}];
 			};
 		};
 	}];
+    
+    
+    ["swt_rbc_channel_changed", swt_rbc_dim_markers_from_other_channels] call CBA_fnc_addEventHandler;
 
 	"swt_markers_send_mark"  addPublicVariableEventHandler {
 		(_this select 1) call swt_markers_logicClient_create;

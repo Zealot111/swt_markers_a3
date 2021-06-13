@@ -53,31 +53,37 @@ swt_markers_logicServer_regMark = {
 	["SWT_fnc_createMarker", [_player, swt_markers_send_mark]] call CBA_fnc_localEvent;
 	///////////////////////
 	switch (_channel) do {
+        // side channel
 	    case "S": {
 	    	_cond = "(side _x == side _player)";
 	    	[_channel, side _player, _mark] call _addToChannel;
 	    	_units = (playableUnits+switchableUnits);
 	    };
+        // command channel
 	    case "C": {
 	    	_cond = "((((leader _x == _x) or (((effectiveCommander (vehicle _x)) == _x) and (vehicle _x != _x))) and (side _x == side _player)) or (_player == _x))";
 	    	[_channel, side _player, _mark] call _addToChannel;
 	    	_units = (playableUnits+switchableUnits);
 	    };
+        // global channel
 	    case "GL": {
 	    	_cond = "true";
 	    	swt_markers_logicServer_GL pushBack _mark;
 	    	_units = (playableUnits+switchableUnits);
 	    };
+        // vehicle channel
 	    case "V": {
 	    	_cond = "(_x in vehicle _player)";
 	    	[_channel, vehicle _player, _mark] call _addToChannel;
 	    	_units = (playableUnits+switchableUnits);
 	    };
+        // group channel
 	    case "GR": {
 	    	_cond = "(group _x == group _player)";
 	    	[_channel, group _player, _mark] call _addToChannel;
 	    	_units = units group _player;
 	    };
+        // direct channel
 	    case "D": {
 	    	_cond = "(_x distance _player < 15)";
 	    	_units = (playableUnits+switchableUnits);

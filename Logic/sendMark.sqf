@@ -93,4 +93,5 @@ switch (_action) do {
 swt_markers_sys_client_send = _send;
 publicVariableServer "swt_markers_sys_client_send";
 if ((isServer) and !(isMultiplayer)) then {swt_markers_sys_client_send call swt_markers_logicServer_regMark;};
+call swt_rbc_dim_markers_from_other_channels;
 true

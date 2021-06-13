@@ -191,7 +191,7 @@ class MDL_RscButton
 };
 class RscDisplayChannel
 {
-	onLoad = "[_this select 0] spawn {swt_markers_channel = ctrlText ((_this select 0) displayCtrl 101)}";
+	onLoad = "[_this select 0] spawn {swt_markers_channel = ctrlText ((_this select 0) displayCtrl 101)};['swt_rbc_channel_changed', []] call CBA_fnc_localEvent;";
 };
 class swt_RscDisplayInsertMarker
 {

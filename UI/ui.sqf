@@ -30,7 +30,8 @@ if (isNil "swt_markers_pos_m") then {swt_markers_pos_m = [0,0]};
 call compile preprocessfilelinenumbers '\swt_markers_a3\UI\MapHandlers.sqf';
 call compile preprocessfilelinenumbers '\swt_markers_a3\UI\DisplayHandlers.sqf';
 
-swt_markers_available_channels = [localize "str_channel_global",localize "str_channel_side",localize "str_channel_command",localize "str_channel_group",localize "str_channel_vehicle",localize "str_channel_direct"];
+swt_markers_all_channels = [localize "str_channel_global",localize "str_channel_side",localize "str_channel_command",localize "str_channel_group",localize "str_channel_vehicle",localize "str_channel_direct"];
+swt_markers_available_channels = +swt_markers_all_channels;
 swt_markers_unavailable_channels = getArray (missionconfigfile >> "disableChannels");
 _arr = swt_markers_available_channels;
 swt_markers_available_channels = [];
@@ -613,9 +614,8 @@ swt_markers_changeChannel = {
 	};
 	swt_markers_channel = swt_markers_available_channels select _curr_num;
 	[(_this select 0),swt_markers_channel] call swt_markers_setChannel;
+    setCurrentChannel (swt_markers_all_channels find swt_markers_channel);
 };
-
-
 
 swt_markers_click_chann = {
 	disableSerialization;
