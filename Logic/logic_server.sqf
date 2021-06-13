@@ -301,6 +301,9 @@ swt_markers_logicServer_load = {
 	     	};
      	};
 	} forEach (playableUnits+switchableUnits);
+    {
+        ["SWT_fnc_createMarker", [_player, _x]] call CBA_fnc_localEvent;
+    } forEach _data;
 };
 
 0 spawn {
