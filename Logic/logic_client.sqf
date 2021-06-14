@@ -10,7 +10,7 @@ swt_markers_getChannel = {
 swt_rbc_checkSideChannel = {
 	private _has_ability = false;
 
-	if (!isNil "WMT_pub_frzState" && WMT_pub_frzState < 3) then {
+	if (missionNamespace getVariable ["WMT_pub_frzState", 10] < 3 || time < 10) then {
 		_has_ability = true;
 	};
 

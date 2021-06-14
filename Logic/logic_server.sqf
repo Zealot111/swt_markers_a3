@@ -118,9 +118,9 @@ swt_markers_logicServer_regMark = {
 	    };
         // group channel
 	    case "GR": {
-	    	_cond = "((group _x == group _player) || (swt_rbc_group_markers_via_radio && {([_player, _x] call swt_rbc_listen_same_tf_radio) && (side _x isEqualTo side _player)}))";
+	    	_cond = "((group _x == group _player) || (swt_rbc_group_markers_via_radio && {(side _x isEqualTo side _player) && {([_player, _x] call swt_rbc_listen_same_tf_radio)}}))";
 	    	[_channel, group _player, _mark] call _addToChannel;
-	    	_units = (playableUnits+switchableUnits);
+	    	_units = if (swt_rbc_group_markers_via_radio) then {playableUnits+switchableUnits} else {units group _player};
 	    };
         // direct channel
 	    case "D": {
