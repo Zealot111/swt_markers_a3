@@ -277,7 +277,50 @@
 <Russian>&lt;t size='0.77'&gt;&lt;t align='center' color='%1'&gt;Credits:&lt;/t&gt;&lt;br/&gt;Sweet Markers System v. 2.1&lt;br/&gt;Created by swatSTEAM&lt;br/&gt;Contact: &lt;t color='%1'&gt;svvatSTEAM@gmail.com&lt;/t&gt;&lt;br/&gt;&lt;a underline='true' color='%1' href='https://twitter.com/swat_steam'&gt;@swat_steam&lt;/a&gt;&lt;br/&gt;&lt;a underline='true' color='%1' href='http://goo.gl/SYahVw'&gt;Download&#160;latest&#160;version&lt;/a&gt;&lt;br/&gt;Translation by: &lt;a underline='true' color='%1' href='http://steamcommunity.com/profiles/76561198035114506/'&gt;thiorymos&lt;/a&gt; and GonzoPunkass&lt;br/&gt;Дизайн&#160;изменил:&#160;MODUL&lt;br/&gt;Special thanks to &lt;a underline='true' color='%1' href='http://wogames.info'&gt;Weekly&#160;Open&#160;Games&lt;/a&gt;&lt;br/&gt;&lt;a underline='true' color='%1' href='%2'&gt;Donate (Yandex)&lt;/a&gt;&lt;br/&gt;&lt;a underline='true' color='%1' href='%3'&gt;Donate (PayPal)&lt;/a&gt;&lt;/t&gt;</Russian>
 </Key>
 
+<Key ID="STR_SWT_SET_GROUP_MARKER">
+<English>Group markers spreads via TFAR radio</English>
+<Russian>Групповые маркера доступны через радио</Russian>
+</Key>
 
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS">
+<English>Limit side channel markers</English>
+<Russian>Ограничить маркера в канал стороны</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS">
+<English>Limit side channel markers</English>
+<Russian>Ограничить маркера в канал стороны</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS">
+<English>Limit side channel markers</English>
+<Russian>Ограничить маркера в канал стороны</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS_OPT0">
+<English>Not limited</English>
+<Russian>Не ограничены</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS_OPT1">
+<English>Need TFAR LR radio</English>
+<Russian>Нужна ДВ рация</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS_OPT2">
+<English>TFAR LR radio or GPS</English>
+<Russian>ДВ рация или GPS</Russian>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS_MSG2">
+<Russian>Требуется &lt;t underline='true'&gt;ДВ&lt;/t&gt; или &lt;t underline='true'&gt;GPS&lt;/t&gt; чтобы ставить маркеры в канал стороны</Russian>
+<English>You need &lt;t underline='true'&gt;LR radio&lt;/t&gt; or &lt;t underline='true'&gt;GPS&lt;/t&gt; to place markers in side channel</English>
+</Key>
+
+<Key ID="STR_SWT_SET_LIMIT_SIDE_MARKERS_MSG1">
+<Russian>Требуется &lt;t underline='true'&gt;ДВ&lt;/t&gt; чтобы ставить маркеры в канал стороны</Russian>
+<English>You need &lt;t underline='true'&gt;LR radio&lt;/t&gt; to place markers in side channel</English>
+</Key>
 
 </Container>
 </Package></Project>

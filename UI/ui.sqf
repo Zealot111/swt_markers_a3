@@ -411,7 +411,7 @@ swt_markers_profileNil = {
 		call swt_def;
 	};
 	if ((profileNamespace getVariable "swt_markers_params_version") != _version) exitWith {
-		systemChat (localize "STR_SWT_M_MESS_OLD");
+		hintSilent (localize "STR_SWT_M_MESS_OLD");
 		profileNamespace setVariable ["swt_markers_params_version", _version];
 		saveProfileNamespace;
 		call swt_def;
@@ -465,7 +465,7 @@ swt_markers_profileNil = {
 };
 
 swt_def = {
-	systemChat (localize "STR_SWT_M_MESS_DEF");
+	hintSilent (localize "STR_SWT_M_MESS_DEF");
 	profileNamespace setVariable ["swt_marker_color_slot_params", ["ColorBlue","ColorRed","ColorGreen","ColorBlack","ColorWhite","ColorYellow"]];
 	profileNamespace setVariable ["swt_marker_icon_slot_params", ["mil_dot","o_inf","o_armor","hd_pickup","hd_warning","hd_unknown"]];
 	profileNamespace setVariable ["swt_marker_settings_params", [false,true,true,false,true,false,true,true,true,"",true, true]];
@@ -677,9 +677,10 @@ swt_markers_fnc_save_markers = {
 		_tmp deleteRange [6,count _tmp - 1];
 		_arr_copy pushBack (+ _tmp);
 	} forEach _arr;
+    forceUnicode 1;
 	if (_this isEqualTo "CLIP") then {copyToClipboard str _arr_copy} else {profileNamespace setVariable ["swt_markers_save_arr", _arr_copy]};
 	saveProfileNamespace;
-	systemChat format [localize "STR_SWT_M_MESS_SAVEDMARKS", count _arr_copy];
+	hintSilent format [localize "STR_SWT_M_MESS_SAVEDMARKS", count _arr_copy];
 };
 
 dell_fnc_findCode = {
@@ -697,17 +698,17 @@ dell_fnc_findCode = {
 };
 
 swt_markers_fnc_load_markers = {
-	_findCode = (if (isNil {_this select 1}) then {""} else {_this select 1}) call dell_fnc_findCode;
-	if (_findCode != -1) exitWith {
-		diag_log format["SWT ERROR (%1): There are signs of code on the boot line.", __FILE__];
-		diag_log format["SWT ERROR (%1): INPUT LINE: %2", __FILE__, (_this select 1) select [[0, _findCode - 100] select (_findCode - 100 >= 0), 200]];
-		systemChat "SWT ERROR: There are signs of code on the boot line.";
-	};
+	// _findCode = (if (isNil {_this select 1}) then {""} else {_this select 1}) call dell_fnc_findCode;
+	// if (_findCode != -1) exitWith {
+		// diag_log format["SWT ERROR (%1): There are signs of code on the boot line.", __FILE__];
+		// diag_log format["SWT ERROR (%1): INPUT LINE: %2", __FILE__, (_this select 1) select [[0, _findCode - 100] select (_findCode - 100 >= 0), 200]];
+		// hintSilent "SWT ERROR: There are signs of code on the boot line.";
+	// };
 	if (swt_markers_load_enabled and(((swt_markers_load_enabled_for) and (((leader player == player) or (((effectiveCommander (vehicle player)) == player) and (vehicle player != player))))) or (!swt_markers_load_enabled_for))and((swt_markers_load_enabled_when)or((!swt_markers_load_enabled_when)and!(time>0)))) then {
 		private ["_arr"];
-		_arr =  (if (isNil {_this select 1}) then {[] + (profileNamespace getVariable "swt_markers_save_arr")} else {call compile ("[]+" + ([(_this select 1),";",""] call swt_str_Replace) + "+[]")});
+		_arr = (if (isNil {_this select 1}) then {[] + (profileNamespace getVariable "swt_markers_save_arr")} else {parseSimpleArray (_this select 1)});
 		if !(_arr isEqualTo []) then {
-			if (count _arr > 500) exitWith {systemChat (format [localize "STR_SWT_M_MESS_CANTLOAD", count _arr, 500]);};
+			if (count _arr > 500) exitWith {hintSilent (format [localize "STR_SWT_M_MESS_CANTLOAD", count _arr, 500]);};
 			_copy_arr = [];
 			{
 				_copy_arr pushBack (["",""] + _x);
@@ -718,9 +719,9 @@ swt_markers_fnc_load_markers = {
 			((_this select 0) select 0) ctrlEnable false;
 			swt_markers_loaded = true;
 		} else {
-			systemChat (localize "STR_SWT_M_MESS_NOMARKS");
+			hintSilent (localize "STR_SWT_M_MESS_NOMARKS");
 		};
-	} else {systemChat (localize "STR_SWT_M_MESS_CANTDO")};
+	} else {hintSilent (localize "STR_SWT_M_MESS_CANTDO")};
 };
 
 

@@ -1,7 +1,7 @@
 disableSerialization;
 _action = _this select 0;
 _params = _this select 1;
-if (swt_markers_disable) exitWith {systemChat (localize "STR_SWT_M_MESS_DISABLED"); true};
+if (swt_markers_disable) exitWith {hintSilent (localize "STR_SWT_M_MESS_DISABLED"); true};
 
 
 
@@ -24,7 +24,7 @@ switch (swt_markers_channel) do {
 		if (!_go && !isNil"CBA_fnc_localEvent") then {
 			[
 				"ace_common_displayTextStructured",
-				["Требуется <t underline='true'>ДВ</t> или <t underline='true'>GPS</t> чтобы ставить маркеры в доп. канал", 2]
+				[localize ("STR_SWT_SET_LIMIT_SIDE_MARKERS_MSG" + str swt_rbc_limit_side_markers), 2]
 			] call CBA_fnc_localEvent;
 		};
 	};
@@ -33,7 +33,7 @@ switch (swt_markers_channel) do {
 		_channel = "C";
 		if !((leader player == player) or (((effectiveCommander (vehicle player)) == player) and (vehicle player != player))) exitWith {
 			_go = false;
-			systemChat "You aren't a team leader";
+			hintSilent "You aren't a team leader";
 		}
 	};
 
@@ -49,7 +49,7 @@ switch (swt_markers_channel) do {
 		_channel = "V";
 		if (vehicle player == player) exitWith {
 			_go = false;
-			systemChat "You aren't in a vehicle";
+			hintSilent "You aren't in a vehicle";
 		};
 	};
 

@@ -67,7 +67,7 @@ swt_markers_MapMouseDown = {
 						swt_mark_to_change_dir = _x;
 						swt_markers_direction = markerDir _x;
 					} else {
-						systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
+						hintSilent (localize "STR_SWT_M_MESS_CANTCHANGE");
 					};
 				};
 			} forEach swt_markers_allMarkers;
@@ -119,7 +119,7 @@ swt_markers_MapMouseDown = {
 										// swt_mark_to_change_pos = _x;
 										// swt_markers_position = getMarkerPos _x;
 									// } else {
-										// systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
+										// hintSilent (localize "STR_SWT_M_MESS_CANTCHANGE");
 									// };
 								// };
 							// } forEach swt_markers_allMarkers;
@@ -131,12 +131,18 @@ swt_markers_MapMouseDown = {
                                 
                                 private _pos = _ctrl ctrlMapWorldToScreen getMarkerPos _x;
                                 if (([_pos,_pos_click] call bis_fnc_distance2D) < 0.05) exitWith {
-                                        diag_log [_markers, [getMarkerPos _x,_pos_click] call bis_fnc_distance2D, _param];
-                                        if (name player == (_param # 8) && (_param #1 isNotEqualTo "S" || (0 call swt_rbc_checkSideChannel))) then {
-                                            swt_mark_to_change_pos = _x;
-                                            swt_markers_position = getMarkerPos _x;
+                                        // diag_log [_markers, [getMarkerPos _x,_pos_click] call bis_fnc_distance2D, _param];
+                                        if (name player == (_param # 8)) then {
+                                            if (_param #1 isNotEqualTo "S" || (0 call swt_rbc_checkSideChannel)) then {
+                                                swt_mark_to_change_pos = _x;
+                                                swt_markers_position = getMarkerPos _x;
+                                            } else {
+                                                ["ace_common_displayTextStructured",
+                                                    [localize ("STR_SWT_SET_LIMIT_SIDE_MARKERS_MSG" + str swt_rbc_limit_side_markers), 2]
+                                                ] call CBA_fnc_localEvent;
+                                            };
                                         } else {
-                                            systemChat (localize "STR_SWT_M_MESS_CANTCHANGE");
+                                            hintSilent (localize "STR_SWT_M_MESS_CANTCHANGE");
                                         };
                                 };
                             } foreach _markers;

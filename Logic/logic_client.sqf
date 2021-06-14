@@ -15,8 +15,8 @@ swt_rbc_checkSideChannel = {
 	};
 
 	switch (true) do {
-		case ("ItemGPS" in assignedItems player);
-		case (count (["B_UavTerminal", "O_UavTerminal", "I_UavTerminal", "C_UavTerminal", "I_E_UavTerminal", "B_ION_UavTerminal_F", "O_R_UavTerminal_F"] arrayIntersect assignedItems player) > 0);
+		case (swt_rbc_limit_side_markers in [0,2] && "ItemGPS" in assignedItems player);
+		case (swt_rbc_limit_side_markers in [0,2] && count (["B_UavTerminal", "O_UavTerminal", "I_UavTerminal", "C_UavTerminal", "I_E_UavTerminal", "B_ION_UavTerminal_F", "O_R_UavTerminal_F"] arrayIntersect assignedItems player) > 0);
 		case (!isNil{TFAR_fnc_haveLRRadio} && {call TFAR_fnc_haveLRRadio}): {
 			_has_ability = true;
 		};
@@ -167,10 +167,12 @@ swt_rbc_dim_markers_from_other_channels = {
 		params ["_mapIsOpened", "_mapIsForced"];
 		if (_mapIsOpened) then {
             call swt_rbc_dim_markers_from_other_channels;
-			0 spawn {
-				uiSleep 0.75;
-				findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["KeyDown", {_this select 1 == 29 && !(0 call swt_rbc_checkSideChannel) && currentChannel == 1}];
-			};
+            if (swt_rbc_limit_side_markers isNotEqualTo 0) then {
+                0 spawn {
+                    uiSleep 0.75;
+                    findDisplay 12 displayCtrl 51 ctrlAddEventHandler ["KeyDown", {_this select 1 == 29 && !(0 call swt_rbc_checkSideChannel) && currentChannel == 1}];
+                };
+            };
 		};
 	}];
     
